@@ -1,6 +1,6 @@
 export default function AboutSection() {
   return (
-    <section id="about" className="px-6 py-20 lg:px-10 lg:py-28">
+    <section id="about" className="bg-bidyo-crimsonBlack px-6 py-20 lg:px-10 lg:py-28">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
         {/* Theatrical team lineup */}
         <div className="lg:col-span-6">

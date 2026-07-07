@@ -1,66 +1,101 @@
-import { useBookingModal } from "../context/BookingModalContext";
 
-export default function HeroBanner() {
-  const { openBooking } = useBookingModal();
-
+export default function HeroBanner_VariationB() {
   return (
-    <section className="px-6 pt-12 lg:px-10 lg:pt-20">
-      <div className="relative mx-auto max-w-7xl">
-        {/* Main dark charcoal card */}
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-bidyo-charcoal">
-          {/* subtle inner glow / texture */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-bidyo-crimson/10" />
+    <section
+      className="relative flex min-h-screen overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-8 lg:px-16 xl:px-24"
+    >
+      {/* ambient glow so the red doesn't read as a flat fill */}
+      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-bidyo-crimson/30 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 right-0 h-96 w-96 rounded-full bg-bidyo-crimson/20 blur-[120px]" />
 
-          <div className="relative grid grid-cols-1 items-center gap-10 px-8 py-16 sm:px-12 sm:py-20 lg:grid-cols-12 lg:px-16">
-            {/* Text column */}
-            <div className="relative z-10 lg:col-span-7">
-              <p className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-bidyo-crimson">
-                UNC BIDYO
-              </p>
+      {/* fade to the next section so the seam isn't a hard cut */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bidyo-crimsonBlack" />
 
-              <h1 className="font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
-                Capturing the moments
-                <br />
-                of every{" "}
-                <span className="italic text-bidyo-crimson">UNCean!</span>
-              </h1>
+      <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-12 lg:grid-cols-12 xl:gap-16">
+        {/* ---------- LEFT: TEXT ---------- */}
+        <div className="flex flex-col items-start gap-6 py-16 lg:col-span-6 lg:py-0">
+          <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-white lg:text-6xl xl:text-7xl">
+            We show up so your moment doesn&rsquo;t get missed.
+          </h1>
 
-              <p className="mt-6 max-w-md text-sm text-neutral-400 sm:text-base">
-               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero, in perferendis! Mollitia dicta ipsam provident dolor laudantium, iure consequatur officiis architecto accusantium quam nesciunt placeat sapiente at molestiae totam quo?
-              </p>
+          <p className="max-w-lg text-lg leading-relaxed text-white/75 xl:text-xl">
+            A student-run crew of shooters and editors covering every UNC
+            org event, from first pitch to final bow — so you can be
+            present instead of holding a phone up.
+          </p>
 
-              <div className="mt-10 flex items-center gap-4">
-                <button
-                  type="button"
-                  onClick={openBooking}
-                  className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-bidyo-crimsonBlack shadow-lg transition hover:scale-[1.03] hover:bg-neutral-100"
-                >
-                  Inquire Now
-                </button>
-                <a
-                  href="#offer"
-                  className="text-sm font-semibold text-neutral-300 underline-offset-4 transition hover:text-white hover:underline"
-                >
-                  See our services
-                </a>
-              </div>
-            </div>
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <a
+              href="#inquire"
+              className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-bold uppercase tracking-[0.08em] text-bidyo-crimsonBlack shadow-lg shadow-black/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-600 hover:text-white hover:shadow-xl"
+            >
+              Inquire Now
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+            <a
+              href="#team"
+              className="inline-flex h-14 items-center justify-center rounded-full border-2 border-white/80 px-8 text-sm font-bold uppercase tracking-[0.08em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
+            >
+              Meet the Team
+            </a>
+          </div>
+        </div>
 
-            {/* Gear graphic column - overlapping, bleeds off the card edge */}
-            <div className="relative z-10 lg:col-span-5">
-              <div className="relative mx-auto aspect-[4/5] w-full max-w-[18rem] sm:max-w-[20rem] lg:absolute lg:-right-10 lg:-top-24 lg:mx-0 lg:max-w-[24rem] xl:-right-16">
-                <img
-                  src="/images/gimbal.png"
-                  alt="Camera mounted on a professional gimbal stabilizer"
-                  className="h-full w-full rounded-3xl object-contain p-2 shadow-2xl ring-1 ring-white/10 sm:p-4"
-                />
-                {/* red accent glow behind the gear image */}
-                <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-bidyo-crimson/30 blur-3xl" />
-              </div>
+        {/* ---------- RIGHT: VISUAL ---------- */}
+        <div className="flex items-center justify-center py-10 lg:col-span-6 lg:py-0">
+          <div className="relative w-full max-w-[560px]">
+            {/* abstract fluid blobs behind the portrait */}
+            <svg
+              viewBox="0 0 500 500"
+              className="pointer-events-none absolute inset-0 -z-10 h-full w-full"
+              style={{ animation: "heroBlobSpin 22s linear infinite" }}
+            >
+              <path
+                fill="#ffffff"
+                fillOpacity="0.12"
+                d="M414,300Q400,400,300,430Q200,460,130,380Q60,300,90,200Q120,100,220,70Q320,40,390,120Q460,200,414,300Z"
+              />
+            </svg>
+            <svg
+              viewBox="0 0 500 500"
+              className="pointer-events-none absolute inset-0 -z-10 h-full w-full"
+              style={{ animation: "heroBlobSpin 18s linear infinite reverse" }}
+            >
+              <path
+                fill="#f5d59a"
+                fillOpacity="0.14"
+                d="M370,260Q360,340,280,370Q200,400,140,340Q80,280,110,200Q140,120,220,100Q300,80,350,140Q400,200,370,260Z"
+              />
+            </svg>
+
+            {/* portrait */}
+            <div
+              className="relative aspect-[4/5] w-full overflow-hidden"
+              style={{ animation: "heroFloat 7s ease-in-out infinite" }}
+            >
+              <img
+                src="public/images/hero/hero.png"
+                alt="UNC BIDYO crew member filming on location"
+                className="h-full w-full object-cover"
+              />
             </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes heroFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        @keyframes heroBlobSpin {
+          from { transform: rotate(0deg) scale(1); }
+          to { transform: rotate(360deg) scale(1.05); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation: none !important; }
+        }
+      `}</style>
     </section>
   );
 }

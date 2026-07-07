@@ -1,33 +1,67 @@
 const highlights = [
   {
     id: "gimbal",
-    title: "Pro Stabilization",
-    image: "/images/highlights/1.jpg",
+    images: [
+      "/images/highlights/1a.webp",
+      "/images/highlights/1b.webp",
+      "/images/highlights/1c.webp",
+    ],
   },
   {
     id: "ry",
-    title: "Campus Coverage",
-    image: "/images/highlights/2.jpg",
+    images: [
+      "/images/highlights/2a.jpg",
+      "/images/highlights/2b.jpg",
+      "/images/highlights/2c.jpg",
+    ],
   },
   {
     id: "homelander",
-    title: "Event Highlights",
-    image: "/images/highlights/3.jpg",
-  },
-  {
-    id: "deeplander",
-    title: "Live Moments",
-    image: "/images/highlights/4.jpg",
+    images: [
+      "/images/highlights/3a.webp",
+      "/images/highlights/3b.webp",
+      "/images/highlights/3c.webp",
+    ],
   },
   {
     id: "starlight",
-    title: "Creative Videography",
-    image: "/images/highlights/5.jpg",
+    images: [
+      "/images/highlights/4a.webp",
+      "/images/highlights/4b.webp",
+      "/images/highlights/4c.webp",
+    ],
   },
   {
     id: "stormfront",
-    title: "Design & Retouch",
-    image: "/images/highlights/6.jpg",
+    images: [
+      "/images/highlights/5a.webp",
+      "/images/highlights/5b.webp",
+      "/images/highlights/5c.webp",
+    ],
+  },
+  {
+    id: "queen-mab",
+    images: [
+      "/images/highlights/6a.webp",
+      "/images/highlights/6b.webp",
+      "/images/highlights/6c.webp",
+    ],
+  },
+  {
+    id: "the-boys",
+    images: [
+      "/images/highlights/7a.webp",
+      "/images/highlights/7b.webp",
+      "/images/highlights/7c.webp",
+    ],
+  },
+  {
+    id: "the-deep",
+    images: [
+      "/images/highlights/8a.webp",
+      "/images/highlights/8b.webp",
+      "/images/highlights/8c.webp",
+    ],
   },
 ];
 

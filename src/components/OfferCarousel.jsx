@@ -79,8 +79,10 @@ export default function OfferCarousel() {
     return () => clearInterval(autoplayRef.current);
   }, [status, isPaused, isDragging, offers.length, index]);
 
-  // ---- Pointer drag (unifies mouse + touch) ----
+  // ---- Pointer drag — touch only. Desktop relies on arrow buttons/keyboard,
+  // so mouse pointers are ignored here to avoid an unnatural click-drag feel.
   const handlePointerDown = (e) => {
+    if (e.pointerType !== "touch") return;
     setIsDragging(true);
     setIsPaused(true);
     dragStartXRef.current = e.clientX;
@@ -88,7 +90,7 @@ export default function OfferCarousel() {
   };
 
   const handlePointerMove = (e) => {
-    if (!isDragging) return;
+    if (!isDragging || e.pointerType !== "touch") return;
     e.preventDefault(); // stop native horizontal page/scroll panning from fighting the drag
     setDragDelta(e.clientX - dragStartXRef.current);
   };
@@ -126,14 +128,14 @@ export default function OfferCarousel() {
     : `transform ${SNAP_DURATION_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`;
 
   return (
-    <section id="offer" className="overflow-hidden py-20 lg:py-28">
+    <section id="offer" className="overflow-hidden bg-bidyo-crimsonBlack py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Heading */}
         <h2 className="text-center font-display text-3xl tracking-widest text-white sm:text-4xl">
           WHAT WE OFFER
         </h2>
         <p className="mx-auto mt-4 max-w-md text-center text-sm text-white/60">
-          Drag, swipe, or use your arrow keys to explore what our team brings to every UNCean production.
+          Swipe on mobile or use the arrows and arrow keys to explore what our team brings to every UNCean production.
         </p>
 
         {status === "loading" && (
@@ -165,7 +167,7 @@ export default function OfferCarousel() {
               onPointerUp={releaseDrag}
               onPointerLeave={releaseDrag}
               className="relative mt-16 select-none outline-none"
-              style={{ cursor: isDragging ? "grabbing" : "grab", touchAction: "pan-y" }}
+              style={{ touchAction: "pan-y" }}
             >
               {/* Screen-reader live announcement */}
               <p className="sr-only" aria-live="polite">
@@ -239,7 +241,7 @@ export default function OfferCarousel() {
                 onClick={goPrev}
                 disabled={index === 0}
                 aria-label="Previous offer"
-                className="absolute left-4 top-1/2 z-20 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 disabled:pointer-events-none disabled:opacity-30 sm:left-6"
+                className="absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 h-12 w-12 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 disabled:pointer-events-none disabled:opacity-30 sm:left-6 sm:grid"
               >
                 ‹
               </button>
@@ -250,7 +252,7 @@ export default function OfferCarousel() {
                 onClick={goNext}
                 disabled={index === offers.length - 1}
                 aria-label="Next offer"
-                className="absolute right-4 top-1/2 z-20 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 disabled:pointer-events-none disabled:opacity-30 sm:right-6"
+                className="absolute right-4 top-1/2 z-20 hidden -translate-y-1/2 h-12 w-12 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 disabled:pointer-events-none disabled:opacity-30 sm:right-6 sm:grid"
               >
                 ›
               </button>
