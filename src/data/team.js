@@ -1,40 +1,117 @@
-const team = [
+const team = 
+ [
   {
     id: "member-1",
-    name: "Add Name Here",
-    role: "Design Head",
+    name: "Arturo \"Junie\" Orante Jr.",
+    role: "Adviser",
     image: "/images/team/1.png",
+    hoverImage: "/images/team/1.1.png",
   },
   {
     id: "member-2",
-    name: "Add Name Here",
-    role: "Videographer",
+    name: "Vincent Olpate",
+    role: "Co-Adviser",
     image: "/images/team/2.png",
+    hoverImage: "/images/team/2.1.png",
   },
   {
     id: "member-3",
-    name: "Add Name Here",
-    role: "Photographer",
+    name: "Gian Allen S. Ong",
+    role: "President",
     image: "/images/team/3.png",
+    hoverImage: "/images/team/3.1.png",
   },
-  {
+   {
     id: "member-4",
-    name: "Add Name Here",
-    role: "Editor",
+    name: "Mike Angel Barbecho",
+    role: "Internal Vice President",
     image: "/images/team/4.png",
+    hoverImage: "/images/team/4.1.png",
   },
-  {
+   {
     id: "member-5",
-    name: "Add Name Here",
-    role: "Marketing",
+    name: "Yohance Lumanta",
+    role: "External Vice President",
     image: "/images/team/5.png",
+    hoverImage: "/images/team/5.1.png",
   },
   {
     id: "member-6",
-    name: "Add Name Here",
-    role: "Producer",
+    name: "Julia Beatrice E. Sanchez",
+    role: "Secretary",
     image: "/images/team/6.png",
+    hoverImage: "/images/team/6.1.png",
   },
+  {
+    id: "member-7",
+    name: "Jannele Rose C.Claro",
+    role: "Treasurer",
+    image: "/images/team/7.png",
+    hoverImage: "/images/team/7.1.png",
+  },
+  {
+    id: "member-8",
+    name: "Phoenixander B. Perez",
+    role: "Documentation Head",
+    image: "/images/team/8.png",
+    hoverImage: "/images/team/8.1.png",
+  },
+  {
+    id: "member-9",
+    name: "Maddox Dimitri B. Sacayan",
+    role: "Asst. Documentation Head",
+    image: "/images/team/9.png",
+    hoverImage: "/images/team/9.1.png",
+  },
+  {
+    id: "member-10",
+    name: "Ellyza Jade A.Barba",
+    role: "Creative Head",
+    image: "/images/team/10.png",
+    hoverImage: "/images/team/10.1.png",
+  },
+  {
+    id: "member-11",
+    name: "Felicity Zoe A. Amado",
+    role: "Asst. Creative Head",
+    image: "/images/team/11.png",
+    hoverImage: "/images/team/11.1.png",
+  },
+  {
+    id: "member-12",
+    name: "Aeila Danielle M. Deligero",
+    role: "Production Head",
+    image: "/images/team/12.png",
+    hoverImage: "/images/team/12.1.png",
+  },
+  {
+    id: "member-13",
+    name: "Simon Cean Elizar P. Samillano",
+    role: "Asst. Production Head",
+    image: "/images/team/13.png",
+    hoverImage: "/images/team/13.1.png",
+  },
+  {
+    id: "member-14",
+    name: "Rovick Domanico",
+    role: "Logistics Head",
+    image: "/images/team/14.png",
+    hoverImage: "/images/team/14.1.png",
+  },
+  {
+    id: "member-15",
+    name: "Maria Antonia D. Zapanta",
+    role: "Asst. Logistics Head",
+    image: "/images/team/15.png",
+    hoverImage: "/images/team/15.1.png",
+  },
+  {
+    id: "member-16",
+    name: "Kurt Xean Pasiona",
+    role: "Website Manager",
+    image: "/images/team/16.png",
+    hoverImage: "/images/team/16.1.png",
+  }
 ];
 
 export default team;

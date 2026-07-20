@@ -1,14 +1,19 @@
 export default function AboutSection() {
   return (
-    <section id="about" className="bg-bidyo-crimsonBlack px-6 py-20 lg:px-10 lg:py-28">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
+    <section id="about" className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 py-20 lg:px-10 lg:py-28">
+      {/* fade in from the previous section so the seam isn't a hard cut */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
+      {/* fade out to the next section */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bidyo-crimsonBlack" />
+
+      <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
         {/* Theatrical team lineup */}
         <div className="lg:col-span-6">
-          <div className="overflow-hidden rounded-[2.5rem] bg-bidyo-charcoal">
+          <div className="overflow-hidden rounded-[2.5rem]bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack">
             <img
-              src="/images/ry.jpg"
+              src=" /images/team/grouppic.png"
               alt="UNC BIDYO team silhouette lineup"
-              className="h-full w-full object-cover grayscale"
+              className="h-full w-full object-cover"
             />
           </div>
         </div>

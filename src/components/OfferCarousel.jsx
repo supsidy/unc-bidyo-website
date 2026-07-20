@@ -128,14 +128,19 @@ export default function OfferCarousel() {
     : `transform ${SNAP_DURATION_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`;
 
   return (
-    <section id="offer" className="overflow-hidden bg-bidyo-crimsonBlack py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="offer" className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack py-20 lg:py-28">
+      {/* fade in from the previous section so the seam isn't a hard cut */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
+      {/* fade out to the next section */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bidyo-crimsonBlack" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
         {/* Heading */}
         <h2 className="text-center font-display text-3xl tracking-widest text-white sm:text-4xl">
           WHAT WE OFFER
         </h2>
         <p className="mx-auto mt-4 max-w-md text-center text-sm text-white/60">
-          Swipe on mobile or use the arrows and arrow keys to explore what our team brings to every UNCean production.
+          The services that the organization provides. 
         </p>
 
         {status === "loading" && (

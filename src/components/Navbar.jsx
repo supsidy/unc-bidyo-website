@@ -54,7 +54,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav
-          className={`hidden items-center gap-8 text-sm font-bold md:flex transition-colors duration-300 ${
+          className={`hidden items-center gap-8 text-sm font-bold md:flex transition-color ${
             scrolled ? "text-neutral-600" : "text-white/85"
           }`}
         >

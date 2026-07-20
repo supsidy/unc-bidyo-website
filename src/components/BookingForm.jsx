@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { useBookingModal } from "../context/BookingModalContext";
+import { supabase } from "../supabaseClient";
 
 // Pulled from .env — see README instructions for setup.
 // NEVER put a private/secret EmailJS key here — only the Public Key belongs client-side.
@@ -9,14 +10,19 @@ const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 const INITIAL_FORM = {
-  fullName: "",
+  firstName: "",
+  middleName: "",
+  lastName: "",
   email: "",
-  contactNumber: "",
+  phoneNumber: "",
   eventTitle: "",
-  date: "",
-  time: "",
+  isMultiDay: false,
+  startDate: "",
+  endDate: "",
+  startTime: "",
+  endTime: "",
   personnel: "",
-  requests: "",
+  additionalRequest: "",
 };
 
 // Simple honeypot field name — bots tend to fill every input they see.
@@ -25,10 +31,16 @@ const HONEYPOT_FIELD = "company_website";
 function validate(form) {
   const errors = {};
 
-  if (!form.fullName.trim()) {
-    errors.fullName = "Full name is required.";
-  } else if (form.fullName.trim().length < 2) {
-    errors.fullName = "Please enter a valid name.";
+  if (!form.firstName.trim()) {
+    errors.firstName = "First name is required.";
+  } else if (form.firstName.trim().length < 2) {
+    errors.firstName = "Please enter a valid first name.";
+  }
+
+  if (!form.lastName.trim()) {
+    errors.lastName = "Last name is required.";
+  } else if (form.lastName.trim().length < 2) {
+    errors.lastName = "Please enter a valid last name.";
   }
 
   if (!form.email.trim()) {
@@ -37,30 +49,53 @@ function validate(form) {
     errors.email = "Please enter a valid email address.";
   }
 
-  const digitsOnly = form.contactNumber.replace(/\D/g, "");
-  if (!form.contactNumber.trim()) {
-    errors.contactNumber = "Contact number is required.";
+  const digitsOnly = form.phoneNumber.replace(/\D/g, "");
+  if (!form.phoneNumber.trim()) {
+    errors.phoneNumber = "Contact number is required.";
   } else if (digitsOnly.length < 7 || digitsOnly.length > 15) {
-    errors.contactNumber = "Please enter a valid contact number.";
+    errors.phoneNumber = "Please enter a valid contact number.";
   }
 
   if (!form.eventTitle.trim()) {
     errors.eventTitle = "Event title is required.";
   }
 
-  if (!form.date) {
-    errors.date = "Please select a date.";
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (!form.startDate) {
+    errors.startDate = form.isMultiDay ? "Please select a start date." : "Please select a date.";
   } else {
-    const selected = new Date(form.date + "T00:00:00");
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (selected < today) {
-      errors.date = "Date can't be in the past.";
+    const start = new Date(form.startDate + "T00:00:00");
+    if (start < today) {
+      errors.startDate = "Date can't be in the past.";
     }
   }
 
-  if (!form.time) {
-    errors.time = "Please select a time.";
+  if (form.isMultiDay) {
+    if (!form.endDate) {
+      errors.endDate = "Please select an end date.";
+    } else if (form.startDate) {
+      const start = new Date(form.startDate + "T00:00:00");
+      const end = new Date(form.endDate + "T00:00:00");
+      if (end < start) {
+        errors.endDate = "End date can't be before the start date.";
+      }
+    }
+  }
+
+  if (!form.startTime) {
+    errors.startTime = form.isMultiDay ? "Please select a start time." : "Please select a time.";
+  }
+
+  if (!form.endTime) {
+    errors.endTime = "Please select an end time.";
+  } else if (
+    !form.isMultiDay &&
+    form.startTime &&
+    form.endTime <= form.startTime
+  ) {
+    errors.endTime = "End time must be after the start time.";
   }
 
   if (!form.personnel) {
@@ -71,8 +106,8 @@ function validate(form) {
     errors.personnel = "For 100+ personnel, mention it in additional requests.";
   }
 
-  if (form.requests.length > 800) {
-    errors.requests = "Please keep additional requests under 800 characters.";
+  if (form.additionalRequest.length > 800) {
+    errors.additionalRequest = "Please keep additional requests under 800 characters.";
   }
 
   return errors;
@@ -85,8 +120,36 @@ export default function BookingForm() {
   const [touched, setTouched] = useState({});
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
   const [statusMessage, setStatusMessage] = useState("");
+  const [visible, setVisible] = useState(false); // drives the enter/exit animation
+  const [shouldRender, setShouldRender] = useState(false); // keeps the modal mounted while it animates out
   const dialogRef = useRef(null);
   const firstFieldRef = useRef(null);
+
+  // Mount immediately on open (then fade/scale in a frame later so the
+  // transition actually runs), and stay mounted just long enough to
+  // animate out before unmounting on close.
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      // Double rAF: the first one just gets us to "after the DOM update,
+      // before paint". We need a second one so the browser actually paints
+      // the invisible/scaled-down state first — otherwise React can apply
+      // both class changes before a single paint happens, and the
+      // transition has no "from" frame to animate from (it just snaps).
+      let raf2;
+      const raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => setVisible(true));
+      });
+      return () => {
+        cancelAnimationFrame(raf1);
+        if (raf2) cancelAnimationFrame(raf2);
+      };
+    } else {
+      setVisible(false);
+      const timeout = setTimeout(() => setShouldRender(false), 250);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
 
   // Reset form state whenever the modal closes, so it's fresh next time.
   useEffect(() => {
@@ -106,7 +169,6 @@ export default function BookingForm() {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      firstFieldRef.current?.focus();
     } else {
       document.body.style.overflow = "";
     }
@@ -114,6 +176,13 @@ export default function BookingForm() {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  // Focus the first field once the dialog has actually mounted.
+  useEffect(() => {
+    if (isOpen && shouldRender) {
+      firstFieldRef.current?.focus();
+    }
+  }, [isOpen, shouldRender]);
 
   // Close on Escape key.
   useEffect(() => {
@@ -125,7 +194,7 @@ export default function BookingForm() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [isOpen, closeBooking]);
 
-  if (!isOpen) return null;
+  if (!shouldRender) return null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -155,14 +224,18 @@ export default function BookingForm() {
     const validationErrors = validate(form);
     setErrors(validationErrors);
     setTouched({
-      fullName: true,
+      firstName: true,
+      middleName: true,
+      lastName: true,
       email: true,
-      contactNumber: true,
+      phoneNumber: true,
       eventTitle: true,
-      date: true,
-      time: true,
+      startDate: true,
+      endDate: true,
+      startTime: true,
+      endTime: true,
       personnel: true,
-      requests: true,
+      additionalRequest: true,
     });
 
     if (Object.keys(validationErrors).length > 0) {
@@ -182,34 +255,72 @@ export default function BookingForm() {
     setStatus("submitting");
     setStatusMessage("");
 
+    // Multi-day mapping: single-day events store the same value in
+    // startDate/endDate so the "date range" is always well-formed in the DB.
+    const resolvedStartDate = form.startDate;
+    const resolvedEndDate = form.isMultiDay ? form.endDate : form.startDate;
+
+    const payload = {
+      firstName: form.firstName.trim(),
+      middleName: form.middleName.trim() || null,
+      lastName: form.lastName.trim(),
+      email: form.email.trim(),
+      phoneNumber: form.phoneNumber.trim(),
+      eventTitle: form.eventTitle.trim(),
+      startDate: resolvedStartDate,
+      endDate: resolvedEndDate,
+      startTime: form.startTime,
+      endTime: form.endTime,
+      personnel: form.personnel ? Number(form.personnel) : null,
+      additionalRequest: form.additionalRequest.trim() || null,
+      status: "pending",
+    };
+
     try {
+      // Step 1: persist the booking in Supabase first — this is the
+      // source of truth. bookID/createdAt are generated by Postgres.
+      const { error: supabaseError } = await supabase
+        .from("booking_form")
+        .insert([payload]);
+
+      if (supabaseError) throw supabaseError;
+
+      // Step 2: only notify by email once the record is safely saved.
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
         {
-          full_name: form.fullName.trim(),
-          email: form.email.trim(),
-          contact_number: form.contactNumber.trim(),
-          event_title: form.eventTitle.trim(),
-          event_date: form.date,
-          event_time: form.time,
-          personnel: form.personnel,
-          requests: form.requests.trim() || "None",
+          first_name: payload.firstName,
+          middle_name: payload.middleName || "",
+          last_name: payload.lastName,
+          full_name: [payload.firstName, payload.middleName, payload.lastName]
+            .filter(Boolean)
+            .join(" "),
+          email: payload.email,
+          contact_number: payload.phoneNumber,
+          event_title: payload.eventTitle,
+          is_multi_day: form.isMultiDay ? "Yes" : "No",
+          event_start_date: payload.startDate,
+          event_end_date: payload.endDate,
+          event_start_time: payload.startTime,
+          event_end_time: payload.endTime,
+          personnel: payload.personnel,
+          requests: payload.additionalRequest || "None",
         },
         { publicKey: PUBLIC_KEY }
       );
 
       setStatus("success");
       setStatusMessage(
-        "Your inquiry has been sent! Check your inbox for a confirmation summary."
+        "Your inquiry has been sent! Check your inbox or spam for a confirmation summary."
       );
       setForm(INITIAL_FORM);
       setTouched({});
     } catch (err) {
-      console.error("EmailJS send failed:", err);
+      console.error("Booking submission failed:", err);
       setStatus("error");
       setStatusMessage(
-        "Something went wrong sending your inquiry. Please try again or contact us directly."
+        "Something went wrong sending your inquiry. Please try again or contact us directly at uncbidyo@unc.edu.ph"
       );
     }
   };
@@ -224,7 +335,9 @@ export default function BookingForm() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/70 px-4 py-8 backdrop-blur-sm"
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto px-4 py-8 transition-opacity duration-300 ease-out ${
+        visible ? "bg-black/70 opacity-100 backdrop-blur-sm" : "bg-black/70 opacity-0"
+      }`}
       onMouseDown={handleOverlayClick}
       role="presentation"
     >
@@ -233,7 +346,11 @@ export default function BookingForm() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="booking-form-title"
-        className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] bg-white shadow-2xl"
+        className={`relative w-full max-w-2xl overflow-hidden rounded-[2rem] bg-white shadow-2xl transition-[transform,opacity] duration-300 ease-out will-change-transform ${
+          visible
+            ? "translate-y-0 scale-100 opacity-100"
+            : "translate-y-4 scale-95 opacity-0"
+        }`}
       >
         {/* Header */}
         <div className="relative bg-bidyo-charcoal px-8 py-7 sm:px-10">
@@ -274,27 +391,75 @@ export default function BookingForm() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {/* Full Name */}
-            <div className="sm:col-span-2">
-              <label htmlFor="fullName" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
-                Full Name
+            {/* First Name */}
+            <div>
+              <label htmlFor="firstName" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                First Name
               </label>
               <input
                 ref={firstFieldRef}
-                id="fullName"
-                name="fullName"
+                id="firstName"
+                name="firstName"
                 type="text"
-                value={form.fullName}
+                value={form.firstName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="Juan Dela Cruz"
-                className={`${inputBaseClass} ${fieldError("fullName") ? errorInputClass : normalInputClass}`}
-                aria-invalid={!!fieldError("fullName")}
-                aria-describedby={fieldError("fullName") ? "fullName-error" : undefined}
+                placeholder="Juan"
+                className={`${inputBaseClass} ${fieldError("firstName") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("firstName")}
+                aria-describedby={fieldError("firstName") ? "firstName-error" : undefined}
               />
-              {fieldError("fullName") && (
-                <p id="fullName-error" className="mt-1.5 text-xs font-medium text-red-500">
-                  {fieldError("fullName")}
+              {fieldError("firstName") && (
+                <p id="firstName-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  {fieldError("firstName")}
+                </p>
+              )}
+            </div>
+
+            {/* Middle Name */}
+            <div>
+              <label htmlFor="middleName" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                Middle Name <span className="font-normal text-neutral-400">(optional)</span>
+              </label>
+              <input
+                id="middleName"
+                name="middleName"
+                type="text"
+                value={form.middleName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Santos"
+                className={`${inputBaseClass} ${fieldError("middleName") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("middleName")}
+                aria-describedby={fieldError("middleName") ? "middleName-error" : undefined}
+              />
+              {fieldError("middleName") && (
+                <p id="middleName-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  {fieldError("middleName")}
+                </p>
+              )}
+            </div>
+
+            {/* Last Name */}
+            <div className="sm:col-span-2">
+              <label htmlFor="lastName" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                value={form.lastName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Dela Cruz"
+                className={`${inputBaseClass} ${fieldError("lastName") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("lastName")}
+                aria-describedby={fieldError("lastName") ? "lastName-error" : undefined}
+              />
+              {fieldError("lastName") && (
+                <p id="lastName-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  {fieldError("lastName")}
                 </p>
               )}
             </div>
@@ -325,24 +490,24 @@ export default function BookingForm() {
 
             {/* Contact Number */}
             <div>
-              <label htmlFor="contactNumber" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label htmlFor="phoneNumber" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
                 Contact Number
               </label>
               <input
-                id="contactNumber"
-                name="contactNumber"
+                id="phoneNumber"
+                name="phoneNumber"
                 type="tel"
-                value={form.contactNumber}
+                value={form.phoneNumber}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="09XX XXX XXXX"
-                className={`${inputBaseClass} ${fieldError("contactNumber") ? errorInputClass : normalInputClass}`}
-                aria-invalid={!!fieldError("contactNumber")}
-                aria-describedby={fieldError("contactNumber") ? "contactNumber-error" : undefined}
+                className={`${inputBaseClass} ${fieldError("phoneNumber") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("phoneNumber")}
+                aria-describedby={fieldError("phoneNumber") ? "phoneNumber-error" : undefined}
               />
-              {fieldError("contactNumber") && (
-                <p id="contactNumber-error" className="mt-1.5 text-xs font-medium text-red-500">
-                  {fieldError("contactNumber")}
+              {fieldError("phoneNumber") && (
+                <p id="phoneNumber-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  {fieldError("phoneNumber")}
                 </p>
               )}
             </div>
@@ -371,49 +536,122 @@ export default function BookingForm() {
               )}
             </div>
 
-            {/* Date */}
+            {/* Multi-day toggle */}
+            <div className="sm:col-span-2">
+              <label className="flex cursor-pointer items-center gap-2.5 select-none">
+                <input
+                  type="checkbox"
+                  name="isMultiDay"
+                  checked={form.isMultiDay}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setForm((prev) => ({
+                      ...prev,
+                      isMultiDay: checked,
+                      // Drop a stale end date if the person unchecks multi-day.
+                      endDate: checked ? prev.endDate : "",
+                    }));
+                  }}
+                  className="h-4 w-4 rounded border-neutral-300 text-bidyo-crimson focus:ring-bidyo-crimson/30"
+                />
+                <span className="text-sm font-semibold text-bidyo-crimsonBlack">
+                  This is a multi-day event
+                </span>
+              </label>
+            </div>
+
+            {/* Start Date */}
             <div>
-              <label htmlFor="date" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
-                Date
+              <label htmlFor="startDate" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                {form.isMultiDay ? "Start Date" : "Date"}
               </label>
               <input
-                id="date"
-                name="date"
+                id="startDate"
+                name="startDate"
                 type="date"
-                value={form.date}
+                value={form.startDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 min={new Date().toISOString().split("T")[0]}
-                className={`${inputBaseClass} ${fieldError("date") ? errorInputClass : normalInputClass}`}
-                aria-invalid={!!fieldError("date")}
-                aria-describedby={fieldError("date") ? "date-error" : undefined}
+                className={`${inputBaseClass} ${fieldError("startDate") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("startDate")}
+                aria-describedby={fieldError("startDate") ? "startDate-error" : undefined}
               />
-              {fieldError("date") && (
-                <p id="date-error" className="mt-1.5 text-xs font-medium text-red-500">
-                  {fieldError("date")}
+              {fieldError("startDate") && (
+                <p id="startDate-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  {fieldError("startDate")}
                 </p>
               )}
             </div>
 
-            {/* Time */}
+            {/* End Date — only shown for multi-day events, sits beside Start Date */}
+            {form.isMultiDay && (
+              <div>
+                <label htmlFor="endDate" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                  End Date
+                </label>
+                <input
+                  id="endDate"
+                  name="endDate"
+                  type="date"
+                  value={form.endDate}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  min={form.startDate || new Date().toISOString().split("T")[0]}
+                  className={`${inputBaseClass} ${fieldError("endDate") ? errorInputClass : normalInputClass}`}
+                  aria-invalid={!!fieldError("endDate")}
+                  aria-describedby={fieldError("endDate") ? "endDate-error" : undefined}
+                />
+                {fieldError("endDate") && (
+                  <p id="endDate-error" className="mt-1.5 text-xs font-medium text-red-500">
+                    {fieldError("endDate")}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Start Time */}
             <div>
-              <label htmlFor="time" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
-                Time
+              <label htmlFor="startTime" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                Start Time
               </label>
               <input
-                id="time"
-                name="time"
+                id="startTime"
+                name="startTime"
                 type="time"
-                value={form.time}
+                value={form.startTime}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={`${inputBaseClass} ${fieldError("time") ? errorInputClass : normalInputClass}`}
-                aria-invalid={!!fieldError("time")}
-                aria-describedby={fieldError("time") ? "time-error" : undefined}
+                className={`${inputBaseClass} ${fieldError("startTime") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("startTime")}
+                aria-describedby={fieldError("startTime") ? "startTime-error" : undefined}
               />
-              {fieldError("time") && (
-                <p id="time-error" className="mt-1.5 text-xs font-medium text-red-500">
-                  {fieldError("time")}
+              {fieldError("startTime") && (
+                <p id="startTime-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  {fieldError("startTime")}
+                </p>
+              )}
+            </div>
+
+            {/* End Time */}
+            <div>
+              <label htmlFor="endTime" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                End Time
+              </label>
+              <input
+                id="endTime"
+                name="endTime"
+                type="time"
+                value={form.endTime}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`${inputBaseClass} ${fieldError("endTime") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("endTime")}
+                aria-describedby={fieldError("endTime") ? "endTime-error" : undefined}
+              />
+              {fieldError("endTime") && (
+                <p id="endTime-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  {fieldError("endTime")}
                 </p>
               )}
             </div>
@@ -446,30 +684,30 @@ export default function BookingForm() {
 
             {/* Additional Requests */}
             <div className="sm:col-span-2">
-              <label htmlFor="requests" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label htmlFor="additionalRequest" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
                 Additional Requests
               </label>
               <textarea
-                id="requests"
-                name="requests"
+                id="additionalRequest"
+                name="additionalRequest"
                 rows={4}
-                value={form.requests}
+                value={form.additionalRequest}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Drone coverage, livestream setup, specific shot list, etc."
-                className={`${inputBaseClass} resize-none ${fieldError("requests") ? errorInputClass : normalInputClass}`}
-                aria-invalid={!!fieldError("requests")}
-                aria-describedby={fieldError("requests") ? "requests-error" : undefined}
+                className={`${inputBaseClass} resize-none ${fieldError("additionalRequest") ? errorInputClass : normalInputClass}`}
+                aria-invalid={!!fieldError("additionalRequest")}
+                aria-describedby={fieldError("additionalRequest") ? "additionalRequest-error" : undefined}
               />
               <div className="mt-1.5 flex items-center justify-between">
-                {fieldError("requests") ? (
-                  <p id="requests-error" className="text-xs font-medium text-red-500">
-                    {fieldError("requests")}
+                {fieldError("additionalRequest") ? (
+                  <p id="additionalRequest-error" className="text-xs font-medium text-red-500">
+                    {fieldError("additionalRequest")}
                   </p>
                 ) : (
                   <span />
                 )}
-                <span className="text-xs text-neutral-400">{form.requests.length}/800</span>
+                <span className="text-xs text-neutral-400">{form.additionalRequest.length}/800</span>
               </div>
             </div>
           </div>

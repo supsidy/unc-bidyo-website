@@ -1,28 +1,23 @@
 const offers = [
   {
     id: "coverage",
-    title: "Org Coverage",
+    title: "Event Coverage",
     image: "/images/carousel/1.jpg",
   },
   {
-    id: "events",
-    title: "Events Photography",
+    id: "photoshoot",
+    title: "Photoshoot",
     image: "/images/carousel/2.jpg",
   },
   {
-    id: "video",
-    title: "Videography",
+    id: "videoshoot",
+    title: "Video Shoot",
     image: "/images/carousel/3.jpg",
   },
   {
-    id: "layout",
-    title: "Layout & Design",
-    image: "/images/carousel/4.jpg",
-  },
-  {
-    id: "editing",
-    title: "Editing",
-    image: "/images/carousel/4.jpg",
+    id: "film-making",
+    title: "Film Making",
+    image: "/images/carousel/5.jpg",
   }
 ];
 

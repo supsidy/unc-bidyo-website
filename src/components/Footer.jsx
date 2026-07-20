@@ -1,7 +1,7 @@
 import { useBookingModal } from "../context/BookingModalContext";
 
 const socialLinks = [
-  { name: "Facebook", href: "https://facebook.com", icon: "facebook" },
+  { name: "Facebook", href: "https://facebook.com/UNCBidyo", icon: "facebook" },
   { name: "Instagram", href: "https://instagram.com", icon: "instagram" },
   { name: "Twitter / X", href: "https://twitter.com", icon: "twitter" },
 ];
@@ -52,7 +52,7 @@ export default function Footer() {
           <div className="sm:col-span-2 lg:col-span-2">
             <div className="flex items-center gap-3">
               <img
-                src="/images/bidyo.png"
+                src="/images/bidyo-white.png"
                 alt="UNC BIDYO logo"
                 className="h-12 w-12 shrink-0 rounded-full object-cover"
               />
@@ -112,7 +112,7 @@ export default function Footer() {
                   href="mailto:unc.bidyo@example.com"
                   className="transition hover:text-bidyo-crimson"
                 >
-                  unc.bidyo@example.com
+                  uncbidyo@unc.edu.ph  
                 </a>
               </li>
               <li>
@@ -123,7 +123,7 @@ export default function Footer() {
                   +63 900 000 0000
                 </a>
               </li>
-              <li className="text-white/50">UNC Campus, Philippines</li>
+              <li className="text-white/50">J. Hernandez Ave. Naga City, Camarines Sur, Philippines 4400</li>
             </ul>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function Footer() {
       <div className="border-t border-white/10 px-6 py-6 lg:px-10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-xs text-white/40 sm:flex-row">
           <p>© {new Date().getFullYear()} UNC BIDYO. All rights reserved.</p>
-          <p>Built with care by the UNC BIDYO team.</p>
+          <p>Non Scholae, Sed Vitae.</p>
         </div>
       </div>
     </footer>

@@ -13,9 +13,14 @@ export default function TeamSection() {
   };
 
   return (
-    <section id="team" className="bg-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32">
-      <div className="mx-auto max-w-7xl">
-        <h2 className="text-center font-display text-3xl tracking-widest text-white sm:text-4xl py-4">
+    <section id="team" className="relative overflow-x-clip bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32">
+      {/* fade in from the previous section so the seam isn't a hard cut */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
+      {/* fade out to the next section */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bidyo-crimsonBlack" />
+
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <h2 className="text-center font-display text-3xl tracking-widest text-white sm:text-4xl">
           MEET THE TEAM
         </h2>
         <p className="mx-auto mt-3 max-w-md text-center text-sm text-white/60">
@@ -29,7 +34,7 @@ export default function TeamSection() {
             type="button"
             onClick={() => scrollByCard(-1)}
             aria-label="Previous team member"
-            className="absolute -left-4 top-1/2 z-20 hidden -translate-y-1/2 h-11 w-11 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 sm:-left-14 sm:grid lg:-left-20"
+            className="absolute -left-4 top-1/2 z-20 hidden -translate-y-1/2 h-11 w-11 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 sm:-left-8 sm:grid lg:-left-10"
           >
             ‹
           </button>
@@ -39,7 +44,7 @@ export default function TeamSection() {
             type="button"
             onClick={() => scrollByCard(1)}
             aria-label="Next team member"
-            className="absolute -right-4 top-1/2 z-20 hidden -translate-y-1/2 h-11 w-11 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 sm:-right-14 sm:grid lg:-right-20"
+            className="absolute -right-4 top-1/2 z-20 hidden -translate-y-1/2 h-11 w-11 place-items-center rounded-full bg-black/40 text-white text-xl backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:scale-110 sm:-right-8 sm:grid lg:-right-10"
           >
             ›
           </button>
@@ -76,11 +81,22 @@ export default function TeamSection() {
                   {/* PNG cutout — NOT clipped, layered above the backdrop, free to overflow on hover.
                       Requires a transparent-background PNG so only the silhouette pops out.
                       Width is locked to the card so it stays centered/aligned; scale (anchored
-                      at the bottom) handles the pop-out growth instead of an unconstrained height. */}
+                      at the bottom) handles the pop-out growth instead of an unconstrained height.
+
+                      Two images are stacked; only `transform` is transitioned (not opacity), so
+                      the scale-up still eases in smoothly but the image swap itself snaps
+                      instantly on hover instead of crossfading. If a member has no hoverImage,
+                      the second layer just mirrors the first, so nothing visually changes. */}
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="pointer-events-none absolute inset-x-0 bottom-0 z-20 w-full scale-125 origin-bottom object-contain object-bottom transition-transform duration-500 ease-out group-hover:z-30 group-hover:scale-150"
+                    className="pointer-events-none absolute inset-x-0 bottom-0 z-20 w-full scale-125 origin-bottom object-contain object-bottom transition-transform duration-500 ease-out group-hover:z-30 group-hover:scale-150 group-hover:opacity-0"
+                  />
+                  <img
+                    src={member.hoverImage || member.image}
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 bottom-0 z-20 w-full scale-125 origin-bottom object-contain object-bottom opacity-0 transition-transform duration-500 ease-out group-hover:z-30 group-hover:scale-150 group-hover:opacity-100"
                   />
                 </div>
 

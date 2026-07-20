@@ -11,10 +11,6 @@ function SlideshowTile({ images, title, className = "", startOffset = 0 }) {
   useEffect(() => {
     if (images.length <= 1) return undefined;
 
-    // Each tile gets its own starting point (startOffset, spaced out by
-    // the grid below) and its own cadence, chosen once at mount. That's
-    // enough to keep 8 tiles from ever turning over in the same frame,
-    // without needing to touch the interval on every tick.
     const cadence = BASE_INTERVAL_MS + Math.random() * JITTER_MS;
     let intervalId;
 
@@ -56,13 +52,6 @@ function SlideshowTile({ images, title, className = "", startOffset = 0 }) {
   );
 }
 
-// Spans for the 8-tile bento pattern. The feature tile (index 0) keeps its
-// 2x2 shape at every breakpoint. The rest of the bento — the tall and wide
-// tiles — only switches on at `lg`, where these exact spans tile a
-// 4-column x 4-row grid with zero gaps (verified: 4 + 1+2+1 + 2+2+2+2 = 16
-// cells). Below `lg`, everything but the feature tile falls back to a
-// plain 1x1 — except tile 8 (index 7), which spans 2 columns x 1 row on
-// mobile/tablet, then reverts to its normal 1x2 shape at `lg`.
 const TILE_SPANS = [
   "col-span-2 row-span-2",
   "",
@@ -76,8 +65,13 @@ const TILE_SPANS = [
 
 export default function HighlightsSection() {
   return (
-    <section id="highlights" className="bg-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32">
-      <div className="mx-auto max-w-7xl">
+    <section id="highlights" className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32">
+      {/* fade in from the previous section so the seam isn't a hard cut */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
+      {/* fade out to the next section */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bidyo-crimsonBlack" />
+
+      <div className="relative z-10 mx-auto max-w-7xl">
         <h2 className="text-center font-display text-3xl tracking-widest text-white sm:text-4xl">
           HIGHLIGHTS
         </h2>
