@@ -8,6 +8,8 @@ import HighlightsSection from "./components/HighlightsSection"; //[cite: 2]
 import Footer from "./components/Footer"; //[cite: 2]
 import BookingForm from "./components/BookingForm"; //[cite: 2]
 import { BookingModalProvider } from "./context/BookingModalContext"; //[cite: 2]
+import PhotoboothModal from "./components/PhotoboothModal";
+import { PhotoboothModalProvider } from "./context/PhotoboothModalContext";
 
 // 1. Import your Admin Portal Controller
 import AdminPortal from "./pages/AdminPortal.jsx"; //[cite: 2]
@@ -34,18 +36,21 @@ export default function App() {
   // 3. Public Website: Render your original landing page[cite: 2]
   return (
     <BookingModalProvider>
-      <div className="min-h-screen bg-gradient-to-b from-bidyo-crimson via-bidyo-crimsonDeep to-bidyo-crimsonBlack">
-        <Navbar />
-        <HeroBanner />
-        <AboutSection />
-        <OfferCarousel />
-        <TeamSection />
-        <HighlightsSection />
-        <Footer />
-      </div>
+      <PhotoboothModalProvider>
+        <div className="min-h-screen bg-gradient-to-b from-bidyo-crimson via-bidyo-crimsonDeep to-bidyo-crimsonBlack">
+          <Navbar />
+          <HeroBanner />
+          <AboutSection />
+          <OfferCarousel />
+          <TeamSection />
+          <HighlightsSection />
+          <Footer />
+        </div>
 
-      {/* Rendered at the root so it can overlay the whole page regardless of scroll position */}
-      <BookingForm />
+        {/* Rendered at the root so it can overlay the whole page regardless of scroll position */}
+        <BookingForm />
+        <PhotoboothModal />
+      </PhotoboothModalProvider>
     </BookingModalProvider>
   );
 }

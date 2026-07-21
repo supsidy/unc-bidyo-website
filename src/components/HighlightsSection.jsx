@@ -73,10 +73,10 @@ export default function HighlightsSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <h2 className="text-center font-display text-3xl tracking-widest text-white sm:text-4xl">
-          HIGHLIGHTS
+          PHOTO DUMP
         </h2>
         <p className="mx-auto mt-3 max-w-md text-center text-sm text-white/60">
-          A look back at the moments we've covered across campus.
+          A look back at the moments we've covered across and beyond campus.
         </p>
 
         <div className="mt-12 grid grid-flow-dense grid-cols-2 auto-rows-[140px] gap-4 sm:grid-cols-3 sm:auto-rows-[160px] lg:grid-cols-4 lg:auto-rows-[190px] lg:gap-5">
