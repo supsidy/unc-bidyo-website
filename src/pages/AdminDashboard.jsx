@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "../supabaseClient";
+import { BookingCardSkeleton, HistoryCardSkeleton } from "../components/skeletons/AdminDashboardSkeleton";
 
 /**
  * AdminDashboard
@@ -246,7 +247,11 @@ export default function AdminDashboard({ session, onLogout }) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6 py-10">
+      <main
+        className="mx-auto max-w-5xl px-6 py-10"
+        aria-busy={loading || historyLoading}
+        aria-live="polite"
+      >
         {/* Global error banner */}
         {errorMsg && (
           <div
@@ -260,33 +265,9 @@ export default function AdminDashboard({ session, onLogout }) {
 
         {/* Loading skeletons */}
         {loading && (
-          <div className="space-y-6">
+          <div className="space-y-6" aria-hidden="true">
             {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="animate-pulse rounded-[2rem] border border-neutral-100 bg-white p-8 shadow-sm"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="space-y-3">
-                    <div className="h-3 w-24 rounded-full bg-neutral-200" />
-                    <div className="h-5 w-56 rounded-full bg-neutral-200" />
-                    <div className="h-3 w-40 rounded-full bg-neutral-200" />
-                  </div>
-                  <div className="h-6 w-20 rounded-full bg-neutral-200" />
-                </div>
-                <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {[0, 1, 2, 3].map((j) => (
-                    <div key={j} className="space-y-2">
-                      <div className="h-2 w-16 rounded-full bg-neutral-200" />
-                      <div className="h-4 w-20 rounded-full bg-neutral-200" />
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-8 flex gap-3">
-                  <div className="h-11 w-28 rounded-full bg-neutral-200" />
-                  <div className="h-11 w-28 rounded-full bg-neutral-200" />
-                </div>
-              </div>
+              <BookingCardSkeleton key={i} />
             ))}
           </div>
         )}
@@ -415,7 +396,7 @@ export default function AdminDashboard({ session, onLogout }) {
         {/* -------------------------------------------------------- */}
         {/* History section                                          */}
         {/* -------------------------------------------------------- */}
-        <section className="mt-14">
+        <section className="mt-14" aria-live="polite">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-white">
               History
@@ -456,20 +437,9 @@ export default function AdminDashboard({ session, onLogout }) {
 
           {/* History loading skeletons */}
           {historyLoading && (
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 space-y-4" aria-hidden="true">
               {[0, 1].map((i) => (
-                <div
-                  key={i}
-                  className="animate-pulse rounded-[1.75rem] border border-white/10 bg-white/90 p-6"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-3">
-                      <div className="h-3 w-24 rounded-full bg-neutral-200" />
-                      <div className="h-4 w-48 rounded-full bg-neutral-200" />
-                    </div>
-                    <div className="h-6 w-20 rounded-full bg-neutral-200" />
-                  </div>
-                </div>
+                <HistoryCardSkeleton key={i} />
               ))}
             </div>
           )}

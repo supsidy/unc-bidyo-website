@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useBookingModal } from "../context/BookingModalContext";
-import { usePhotoboothModal } from "../context/PhotoboothModalContext";
 
 export default function Navbar() {
   const { openBooking } = useBookingModal();
-  const { openPhotobooth } = usePhotoboothModal();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -63,13 +61,6 @@ export default function Navbar() {
           <a href="#about" className="transition hover:text-bidyo-crimson">About</a>
           <a href="#offer" className="transition hover:text-bidyo-crimson">What We Offer</a>
           <a href="#highlights" className="transition hover:text-bidyo-crimson">Highlights</a>
-          <button
-            type="button"
-            onClick={openPhotobooth}
-            className="transition hover:text-bidyo-crimson"
-          >
-            Photobooth
-          </button>
         </nav>
 
         {/* Desktop CTA */}
@@ -133,13 +124,6 @@ export default function Navbar() {
             className="rounded-xl px-3 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson">
             Highlights
           </a>
-          <button
-            type="button"
-            onClick={() => { openPhotobooth(); closeMenu(); }}
-            className="rounded-xl px-3 py-3 text-left text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson"
-          >
-            Photobooth
-          </button>
           <button
             type="button"
             onClick={() => { openBooking(); closeMenu(); }}

@@ -1,6 +1,20 @@
-export default function AboutSection() {
+import AboutSectionSkeleton from "./skeletons/AboutSectionSkeleton";
+
+export default function AboutSection({ isLoading = false }) {
+  if (isLoading) {
+    return (
+      <div aria-busy="true" aria-hidden="true">
+        <AboutSectionSkeleton />
+      </div>
+    );
+  }
+
   return (
-    <section id="about" className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 py-20 lg:px-10 lg:py-28">
+    <section
+      id="about"
+      aria-busy={isLoading}
+      className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 py-20 lg:px-10 lg:py-28"
+    >
       {/* fade in from the previous section so the seam isn't a hard cut */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
       {/* fade out to the next section */}

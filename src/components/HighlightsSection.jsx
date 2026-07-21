@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import highlights from "../data/highlights";
+import HighlightsSectionSkeleton from "./skeletons/HighlightsSectionSkeleton";
 
 const BASE_INTERVAL_MS = 4800; // roughly how long each image holds
 const JITTER_MS = 1400; // per-tile randomness so cadences drift apart
@@ -63,9 +64,21 @@ const TILE_SPANS = [
   "col-span-2 lg:col-span-1 lg:row-span-2",
 ];
 
-export default function HighlightsSection() {
+export default function HighlightsSection({ isLoading = false }) {
+  if (isLoading) {
+    return (
+      <div aria-busy="true" aria-hidden="true">
+        <HighlightsSectionSkeleton tileCount={highlights.length} />
+      </div>
+    );
+  }
+
   return (
-    <section id="highlights" className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32">
+    <section
+      id="highlights"
+      aria-busy={isLoading}
+      className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32"
+    >
       {/* fade in from the previous section so the seam isn't a hard cut */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
       {/* fade out to the next section */}

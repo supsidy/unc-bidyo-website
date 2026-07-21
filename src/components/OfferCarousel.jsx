@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { OfferCarouselSkeletonContent } from "./skeletons/OfferCarouselSkeleton";
 
 // ---- Tunables ----
 const SLIDE_WIDTH_RATIO = 0.6;   // each slide's width as a fraction of the container
@@ -128,7 +129,11 @@ export default function OfferCarousel() {
     : `transform ${SNAP_DURATION_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`;
 
   return (
-    <section id="offer" className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack py-20 lg:py-28">
+    <section
+      id="offer"
+      aria-busy={status === "loading"}
+      className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack py-20 lg:py-28"
+    >
       {/* fade in from the previous section so the seam isn't a hard cut */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
       {/* fade out to the next section */}
@@ -144,7 +149,9 @@ export default function OfferCarousel() {
         </p>
 
         {status === "loading" && (
-          <p className="mt-16 text-center text-sm text-white/50">Loading services…</p>
+          <div aria-hidden="true">
+            <OfferCarouselSkeletonContent slideCount={3} />
+          </div>
         )}
 
         {status === "error" && (
