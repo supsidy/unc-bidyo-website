@@ -16,7 +16,7 @@ export default function HeroBanner_VariationB() {
         style={{ animation: "heroFloat 9s ease-in-out infinite" }}
       >
         <img
-          src="/images/hero/test.png"
+          src="/images/hero/hero.png"
           alt=""
           role="presentation"
           className="h-full w-full object-cover mix-blend-lighten "
