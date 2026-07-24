@@ -61,8 +61,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
-              The official media and documentation team of UNC, capturing every
-              event, milestone, and moment worth remembering.
+              Est. 2023, The organization's mission is to capture and share the moments of every UNCean.
             </p>
 
             {/* Socials */}
@@ -112,7 +111,7 @@ export default function Footer() {
                   href="mailto:unc.bidyo@example.com"
                   className="transition hover:text-bidyo-crimson"
                 >
-                  uncbidyo@unc.edu.ph  
+                  uncbidyoorg@gmail.com
                 </a>
               </li>
               <li>

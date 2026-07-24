@@ -8,7 +8,9 @@ import HighlightsSection from "./components/HighlightsSection";
 import Footer from "./components/Footer";
 import BookingForm from "./components/BookingForm";
 import { BookingModalProvider } from "./context/BookingModalContext";
-import Preloader from "./components/Preloader"; // NEW
+import Preloader from "./components/Preloader";
+import PhotoboothModal from "./components/PhotoboothModal";
+import { PhotoboothModalProvider } from "./context/PhotoboothModalContext";
 
 // 1. Import your Admin Portal Controller
 import AdminPortal from "./pages/AdminPortal.jsx";
@@ -17,7 +19,7 @@ export default function App() {
   // Keep track of the URL pathname in state
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  // NEW: whether the hero image has finished preloading
+  // whether the hero image has finished preloading
   const [siteReady, setSiteReady] = useState(false);
 
   // Listen to browser forward/backward navigation changes
@@ -38,20 +40,23 @@ export default function App() {
   // 3. Public Website: Render your original landing page
   return (
     <BookingModalProvider>
-      {!siteReady && <Preloader onDone={() => setSiteReady(true)} />}
+      <PhotoboothModalProvider>
+        {!siteReady && <Preloader onDone={() => setSiteReady(true)} />}
 
-      <div className="min-h-screen bg-gradient-to-b from-bidyo-crimson via-bidyo-crimsonDeep to-bidyo-crimsonBlack">
-        <Navbar />
-        <HeroBanner />
-        <AboutSection />
-        <OfferCarousel />
-        <TeamSection />
-        <HighlightsSection />
-        <Footer />
-      </div>
+        <div className="min-h-screen bg-gradient-to-b from-bidyo-crimson via-bidyo-crimsonDeep to-bidyo-crimsonBlack">
+          <Navbar />
+          <HeroBanner />
+          <AboutSection />
+          <OfferCarousel />
+          <TeamSection />
+          <HighlightsSection />
+          <Footer />
+        </div>
 
-      {/* Rendered at the root so it can overlay the whole page regardless of scroll position */}
-      <BookingForm />
+        {/* Rendered at the root so it can overlay the whole page regardless of scroll position */}
+        <BookingForm />
+        <PhotoboothModal />
+      </PhotoboothModalProvider>
     </BookingModalProvider>
   );
 }
