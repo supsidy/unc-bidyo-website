@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
 const PhotoboothModalContext = createContext(null);
 
@@ -20,7 +26,9 @@ export function PhotoboothModalProvider({ children }) {
   }, []);
 
   return (
-    <PhotoboothModalContext.Provider value={{ isOpen, openPhotobooth, closePhotobooth }}>
+    <PhotoboothModalContext.Provider
+      value={{ isOpen, openPhotobooth, closePhotobooth }}
+    >
       {children}
     </PhotoboothModalContext.Provider>
   );
@@ -29,7 +37,9 @@ export function PhotoboothModalProvider({ children }) {
 export function usePhotoboothModal() {
   const ctx = useContext(PhotoboothModalContext);
   if (!ctx) {
-    throw new Error("usePhotoboothModal must be used within a PhotoboothModalProvider");
+    throw new Error(
+      "usePhotoboothModal must be used within a PhotoboothModalProvider"
+    );
   }
   return ctx;
 }

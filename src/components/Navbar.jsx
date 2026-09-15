@@ -25,7 +25,6 @@ export default function Navbar() {
     >
       {/* Main bar */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
-
         {/* Logo */}
         <div className="flex items-center gap-3">
           <div className="relative h-14 w-14 shrink-0">
@@ -60,9 +59,15 @@ export default function Navbar() {
             scrolled ? "text-neutral-600" : "text-white/85"
           }`}
         >
-          <a href="#about" className="transition hover:text-bidyo-crimson">About</a>
-          <a href="#offer" className="transition hover:text-bidyo-crimson">What We Offer</a>
-          <a href="#highlights" className="transition hover:text-bidyo-crimson">Highlights</a>
+          <a href="#about" className="transition hover:text-bidyo-crimson">
+            About
+          </a>
+          <a href="#offer" className="transition hover:text-bidyo-crimson">
+            What We Offer
+          </a>
+          <a href="#highlights" className="transition hover:text-bidyo-crimson">
+            Highlights
+          </a>
           <button
             type="button"
             onClick={openPhotobooth}
@@ -114,42 +119,55 @@ export default function Navbar() {
       {/* Mobile dropdown — stays solid white regardless of scroll state, it's an overlay panel */}
       <div
         className={`md:hidden overflow-hidden bg-white transition-all duration-300 ease-in-out ${
-          menuOpen ? "max-h-72 border-t border-neutral-100 shadow-sm" : "max-h-0"
+          menuOpen
+            ? "max-h-72 border-t border-neutral-100 shadow-sm"
+            : "max-h-0"
         }`}
       >
         <nav className="flex flex-col gap-1 bg-white px-6 py-4">
-          <a href="#about"
+          <a
+            href="#about"
             onClick={closeMenu}
-            className="rounded-xl px-3 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson">
+            className="rounded-xl px-3 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson"
+          >
             About
           </a>
-          <a href="#offer"
+          <a
+            href="#offer"
             onClick={closeMenu}
-            className="rounded-xl px-3 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson">
+            className="rounded-xl px-3 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson"
+          >
             What We Offer
           </a>
-          <a href="#highlights"
+          <a
+            href="#highlights"
             onClick={closeMenu}
-            className="rounded-xl px-3 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson">
+            className="rounded-xl px-3 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson"
+          >
             Highlights
           </a>
           <button
             type="button"
-            onClick={() => { openPhotobooth(); closeMenu(); }}
+            onClick={() => {
+              openPhotobooth();
+              closeMenu();
+            }}
             className="rounded-xl px-3 py-3 text-left text-sm font-bold text-neutral-700 transition hover:bg-neutral-50 hover:text-bidyo-crimson"
           >
             Photobooth
           </button>
           <button
             type="button"
-            onClick={() => { openBooking(); closeMenu(); }}
+            onClick={() => {
+              openBooking();
+              closeMenu();
+            }}
             className="mt-2 w-full rounded-full bg-bidyo-crimsonBlack py-3 text-sm font-bold text-white transition hover:bg-bidyo-crimson"
           >
             Inquire Now
           </button>
         </nav>
       </div>
-
     </header>
   );
 }

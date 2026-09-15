@@ -18,7 +18,7 @@ const offers = [
     id: "film-making",
     title: "Film Making",
     image: "/images/carousel/5.jpg",
-  }
+  },
 ];
 
 export default offers;

@@ -64,7 +64,9 @@ function validate(form) {
   today.setHours(0, 0, 0, 0);
 
   if (!form.startDate) {
-    errors.startDate = form.isMultiDay ? "Please select a start date." : "Please select a date.";
+    errors.startDate = form.isMultiDay
+      ? "Please select a start date."
+      : "Please select a date.";
   } else {
     const start = new Date(form.startDate + "T00:00:00");
     if (start < today) {
@@ -85,7 +87,9 @@ function validate(form) {
   }
 
   if (!form.startTime) {
-    errors.startTime = form.isMultiDay ? "Please select a start time." : "Please select a time.";
+    errors.startTime = form.isMultiDay
+      ? "Please select a start time."
+      : "Please select a time.";
   }
 
   if (!form.endTime) {
@@ -100,14 +104,18 @@ function validate(form) {
 
   if (!form.personnel) {
     errors.personnel = "Number of personnel is required.";
-  } else if (!Number.isInteger(Number(form.personnel)) || Number(form.personnel) < 1) {
+  } else if (
+    !Number.isInteger(Number(form.personnel)) ||
+    Number(form.personnel) < 1
+  ) {
     errors.personnel = "Enter a whole number of 1 or more.";
   } else if (Number(form.personnel) > 100) {
     errors.personnel = "For 100+ personnel, mention it in additional requests.";
   }
 
   if (form.additionalRequest.length > 800) {
-    errors.additionalRequest = "Please keep additional requests under 800 characters.";
+    errors.additionalRequest =
+      "Please keep additional requests under 800 characters.";
   }
 
   return errors;
@@ -325,18 +333,22 @@ export default function BookingForm() {
     }
   };
 
-  const fieldError = (name) => (touched[name] && errors[name] ? errors[name] : null);
+  const fieldError = (name) =>
+    touched[name] && errors[name] ? errors[name] : null;
 
   const inputBaseClass =
     "w-full rounded-xl border bg-white px-4 py-3 text-sm text-bidyo-crimsonBlack placeholder:text-neutral-400 outline-none transition focus:border-bidyo-crimson focus:ring-2 focus:ring-bidyo-crimson/20";
 
-  const errorInputClass = "border-red-400 focus:border-red-500 focus:ring-red-200";
+  const errorInputClass =
+    "border-red-400 focus:border-red-500 focus:ring-red-200";
   const normalInputClass = "border-neutral-200";
 
   return (
     <div
       className={`fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto px-4 py-8 transition-opacity duration-300 ease-out ${
-        visible ? "bg-black/70 opacity-100 backdrop-blur-sm" : "bg-black/70 opacity-0"
+        visible
+          ? "bg-black/70 opacity-100 backdrop-blur-sm"
+          : "bg-black/70 opacity-0"
       }`}
       onMouseDown={handleOverlayClick}
       role="presentation"
@@ -372,12 +384,17 @@ export default function BookingForm() {
             Book Your Coverage
           </h2>
           <p className="mt-2 max-w-md text-sm text-neutral-400">
-            Tell us about your event and we'll send a confirmation summary straight to your inbox.
+            Tell us about your event and we'll send a confirmation summary
+            straight to your inbox.
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} noValidate className="max-h-[70vh] overflow-y-auto px-8 py-7 sm:px-10">
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          className="max-h-[70vh] overflow-y-auto px-8 py-7 sm:px-10"
+        >
           {/* Honeypot — visually hidden, kept out of the tab order */}
           <div className="absolute -left-[9999px]" aria-hidden="true">
             <label htmlFor={HONEYPOT_FIELD}>Company website</label>
@@ -393,7 +410,10 @@ export default function BookingForm() {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {/* First Name */}
             <div>
-              <label htmlFor="firstName" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="firstName"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 First Name
               </label>
               <input
@@ -407,10 +427,15 @@ export default function BookingForm() {
                 placeholder="Juan"
                 className={`${inputBaseClass} ${fieldError("firstName") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("firstName")}
-                aria-describedby={fieldError("firstName") ? "firstName-error" : undefined}
+                aria-describedby={
+                  fieldError("firstName") ? "firstName-error" : undefined
+                }
               />
               {fieldError("firstName") && (
-                <p id="firstName-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="firstName-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("firstName")}
                 </p>
               )}
@@ -418,8 +443,12 @@ export default function BookingForm() {
 
             {/* Middle Name */}
             <div>
-              <label htmlFor="middleName" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
-                Middle Name <span className="font-normal text-neutral-400">(optional)</span>
+              <label
+                htmlFor="middleName"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
+                Middle Name{" "}
+                <span className="font-normal text-neutral-400">(optional)</span>
               </label>
               <input
                 id="middleName"
@@ -431,10 +460,15 @@ export default function BookingForm() {
                 placeholder="Santos"
                 className={`${inputBaseClass} ${fieldError("middleName") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("middleName")}
-                aria-describedby={fieldError("middleName") ? "middleName-error" : undefined}
+                aria-describedby={
+                  fieldError("middleName") ? "middleName-error" : undefined
+                }
               />
               {fieldError("middleName") && (
-                <p id="middleName-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="middleName-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("middleName")}
                 </p>
               )}
@@ -442,7 +476,10 @@ export default function BookingForm() {
 
             {/* Last Name */}
             <div className="sm:col-span-2">
-              <label htmlFor="lastName" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="lastName"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 Last Name
               </label>
               <input
@@ -455,10 +492,15 @@ export default function BookingForm() {
                 placeholder="Dela Cruz"
                 className={`${inputBaseClass} ${fieldError("lastName") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("lastName")}
-                aria-describedby={fieldError("lastName") ? "lastName-error" : undefined}
+                aria-describedby={
+                  fieldError("lastName") ? "lastName-error" : undefined
+                }
               />
               {fieldError("lastName") && (
-                <p id="lastName-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="lastName-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("lastName")}
                 </p>
               )}
@@ -466,7 +508,10 @@ export default function BookingForm() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="email"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 Email Address
               </label>
               <input
@@ -479,10 +524,15 @@ export default function BookingForm() {
                 placeholder="you@example.com"
                 className={`${inputBaseClass} ${fieldError("email") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("email")}
-                aria-describedby={fieldError("email") ? "email-error" : undefined}
+                aria-describedby={
+                  fieldError("email") ? "email-error" : undefined
+                }
               />
               {fieldError("email") && (
-                <p id="email-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="email-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("email")}
                 </p>
               )}
@@ -490,7 +540,10 @@ export default function BookingForm() {
 
             {/* Contact Number */}
             <div>
-              <label htmlFor="phoneNumber" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="phoneNumber"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 Contact Number
               </label>
               <input
@@ -503,10 +556,15 @@ export default function BookingForm() {
                 placeholder="09XX XXX XXXX"
                 className={`${inputBaseClass} ${fieldError("phoneNumber") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("phoneNumber")}
-                aria-describedby={fieldError("phoneNumber") ? "phoneNumber-error" : undefined}
+                aria-describedby={
+                  fieldError("phoneNumber") ? "phoneNumber-error" : undefined
+                }
               />
               {fieldError("phoneNumber") && (
-                <p id="phoneNumber-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="phoneNumber-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("phoneNumber")}
                 </p>
               )}
@@ -514,7 +572,10 @@ export default function BookingForm() {
 
             {/* Event Title */}
             <div className="sm:col-span-2">
-              <label htmlFor="eventTitle" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="eventTitle"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 Event Title
               </label>
               <input
@@ -527,10 +588,15 @@ export default function BookingForm() {
                 placeholder="e.g. UNC Founders' Day Program"
                 className={`${inputBaseClass} ${fieldError("eventTitle") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("eventTitle")}
-                aria-describedby={fieldError("eventTitle") ? "eventTitle-error" : undefined}
+                aria-describedby={
+                  fieldError("eventTitle") ? "eventTitle-error" : undefined
+                }
               />
               {fieldError("eventTitle") && (
-                <p id="eventTitle-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="eventTitle-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("eventTitle")}
                 </p>
               )}
@@ -562,7 +628,10 @@ export default function BookingForm() {
 
             {/* Start Date */}
             <div>
-              <label htmlFor="startDate" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="startDate"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 {form.isMultiDay ? "Start Date" : "Date"}
               </label>
               <input
@@ -575,10 +644,15 @@ export default function BookingForm() {
                 min={new Date().toISOString().split("T")[0]}
                 className={`${inputBaseClass} ${fieldError("startDate") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("startDate")}
-                aria-describedby={fieldError("startDate") ? "startDate-error" : undefined}
+                aria-describedby={
+                  fieldError("startDate") ? "startDate-error" : undefined
+                }
               />
               {fieldError("startDate") && (
-                <p id="startDate-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="startDate-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("startDate")}
                 </p>
               )}
@@ -587,7 +661,10 @@ export default function BookingForm() {
             {/* End Date — only shown for multi-day events, sits beside Start Date */}
             {form.isMultiDay && (
               <div>
-                <label htmlFor="endDate" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+                <label
+                  htmlFor="endDate"
+                  className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+                >
                   End Date
                 </label>
                 <input
@@ -600,10 +677,15 @@ export default function BookingForm() {
                   min={form.startDate || new Date().toISOString().split("T")[0]}
                   className={`${inputBaseClass} ${fieldError("endDate") ? errorInputClass : normalInputClass}`}
                   aria-invalid={!!fieldError("endDate")}
-                  aria-describedby={fieldError("endDate") ? "endDate-error" : undefined}
+                  aria-describedby={
+                    fieldError("endDate") ? "endDate-error" : undefined
+                  }
                 />
                 {fieldError("endDate") && (
-                  <p id="endDate-error" className="mt-1.5 text-xs font-medium text-red-500">
+                  <p
+                    id="endDate-error"
+                    className="mt-1.5 text-xs font-medium text-red-500"
+                  >
                     {fieldError("endDate")}
                   </p>
                 )}
@@ -612,7 +694,10 @@ export default function BookingForm() {
 
             {/* Start Time */}
             <div>
-              <label htmlFor="startTime" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="startTime"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 Start Time
               </label>
               <input
@@ -624,10 +709,15 @@ export default function BookingForm() {
                 onBlur={handleBlur}
                 className={`${inputBaseClass} ${fieldError("startTime") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("startTime")}
-                aria-describedby={fieldError("startTime") ? "startTime-error" : undefined}
+                aria-describedby={
+                  fieldError("startTime") ? "startTime-error" : undefined
+                }
               />
               {fieldError("startTime") && (
-                <p id="startTime-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="startTime-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("startTime")}
                 </p>
               )}
@@ -635,7 +725,10 @@ export default function BookingForm() {
 
             {/* End Time */}
             <div>
-              <label htmlFor="endTime" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="endTime"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 End Time
               </label>
               <input
@@ -647,10 +740,15 @@ export default function BookingForm() {
                 onBlur={handleBlur}
                 className={`${inputBaseClass} ${fieldError("endTime") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("endTime")}
-                aria-describedby={fieldError("endTime") ? "endTime-error" : undefined}
+                aria-describedby={
+                  fieldError("endTime") ? "endTime-error" : undefined
+                }
               />
               {fieldError("endTime") && (
-                <p id="endTime-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="endTime-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("endTime")}
                 </p>
               )}
@@ -658,7 +756,10 @@ export default function BookingForm() {
 
             {/* Number of Personnel */}
             <div className="sm:col-span-2">
-              <label htmlFor="personnel" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="personnel"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 Number of Personnel Needed
               </label>
               <input
@@ -673,10 +774,15 @@ export default function BookingForm() {
                 placeholder="e.g. 3"
                 className={`${inputBaseClass} ${fieldError("personnel") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("personnel")}
-                aria-describedby={fieldError("personnel") ? "personnel-error" : undefined}
+                aria-describedby={
+                  fieldError("personnel") ? "personnel-error" : undefined
+                }
               />
               {fieldError("personnel") && (
-                <p id="personnel-error" className="mt-1.5 text-xs font-medium text-red-500">
+                <p
+                  id="personnel-error"
+                  className="mt-1.5 text-xs font-medium text-red-500"
+                >
                   {fieldError("personnel")}
                 </p>
               )}
@@ -684,7 +790,10 @@ export default function BookingForm() {
 
             {/* Additional Requests */}
             <div className="sm:col-span-2">
-              <label htmlFor="additionalRequest" className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack">
+              <label
+                htmlFor="additionalRequest"
+                className="mb-1.5 block text-sm font-semibold text-bidyo-crimsonBlack"
+              >
                 Additional Requests
               </label>
               <textarea
@@ -697,17 +806,26 @@ export default function BookingForm() {
                 placeholder="Drone coverage, livestream setup, specific shot list, etc."
                 className={`${inputBaseClass} resize-none ${fieldError("additionalRequest") ? errorInputClass : normalInputClass}`}
                 aria-invalid={!!fieldError("additionalRequest")}
-                aria-describedby={fieldError("additionalRequest") ? "additionalRequest-error" : undefined}
+                aria-describedby={
+                  fieldError("additionalRequest")
+                    ? "additionalRequest-error"
+                    : undefined
+                }
               />
               <div className="mt-1.5 flex items-center justify-between">
                 {fieldError("additionalRequest") ? (
-                  <p id="additionalRequest-error" className="text-xs font-medium text-red-500">
+                  <p
+                    id="additionalRequest-error"
+                    className="text-xs font-medium text-red-500"
+                  >
                     {fieldError("additionalRequest")}
                   </p>
                 ) : (
                   <span />
                 )}
-                <span className="text-xs text-neutral-400">{form.additionalRequest.length}/800</span>
+                <span className="text-xs text-neutral-400">
+                  {form.additionalRequest.length}/800
+                </span>
               </div>
             </div>
           </div>

@@ -45,7 +45,13 @@ export default function AboutSection({ isLoading = false }) {
             We are UNC BIDYO.
           </h2>
           <p className="mt-6 text-justify text-base leading-relaxed text-white/80">
-            The organization was founded as a space for students who embody vision, truth, and memory to come together and grow. While showcasing the genuine, everyday moments of every "UNCean" remains central to its purpose, the organization is equally devoted to fostering skill-sharing and building connections among individuals who share the same passions and goals. In this way, it reflects what UNCeans truly value: to share, to show, and to stand.
+            The organization was founded as a space for students who embody
+            vision, truth, and memory to come together and grow. While
+            showcasing the genuine, everyday moments of every "UNCean" remains
+            central to its purpose, the organization is equally devoted to
+            fostering skill-sharing and building connections among individuals
+            who share the same passions and goals. In this way, it reflects what
+            UNCeans truly value: to share, to show, and to stand.
           </p>
         </div>
       </div>

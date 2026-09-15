@@ -47,7 +47,10 @@ export default function HeroBanner_VariationB() {
           </h1>
 
           <p className="max-w-lg text-lg leading-relaxed text-white/75 xl:text-lg">
-            A vibrant organization and a home for aspiring photographers, videographers, editors, actors, directors, and creative minds at the University of Nueva Caceres. When the doors of creative opportunity close, we are here to open them. Welcome to BIDYO!
+            A vibrant organization and a home for aspiring photographers,
+            videographers, editors, actors, directors, and creative minds at the
+            University of Nueva Caceres. When the doors of creative opportunity
+            close, we are here to open them. Welcome to BIDYO!
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -57,7 +60,9 @@ export default function HeroBanner_VariationB() {
               className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-bold uppercase tracking-[0.08em] text-bidyo-crimsonBlack shadow-lg shadow-black/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-600 hover:text-white hover:shadow-xl"
             >
               Inquire Now
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
             </button>
             <a
               href="#team"

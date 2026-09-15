@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "../supabaseClient";
-import { BookingCardSkeleton, HistoryCardSkeleton } from "../components/skeletons/AdminDashboardSkeleton";
+import {
+  BookingCardSkeleton,
+  HistoryCardSkeleton,
+} from "../components/skeletons/AdminDashboardSkeleton";
 
 /**
  * AdminDashboard
@@ -101,7 +104,8 @@ export default function AdminDashboard({ session, onLogout }) {
 
   const sortHistory = (list) =>
     [...list].sort((a, b) => {
-      const rankDiff = (STATUS_ORDER[a.status] ?? 2) - (STATUS_ORDER[b.status] ?? 2);
+      const rankDiff =
+        (STATUS_ORDER[a.status] ?? 2) - (STATUS_ORDER[b.status] ?? 2);
       if (rankDiff !== 0) return rankDiff;
 
       const dateA = a.startDate ? new Date(a.startDate).getTime() : 0;
@@ -171,7 +175,9 @@ export default function AdminDashboard({ session, onLogout }) {
       .eq("bookID", bookID);
 
     if (error) {
-      setErrorMsg(error.message || "Something went wrong updating that booking.");
+      setErrorMsg(
+        error.message || "Something went wrong updating that booking."
+      );
       setPendingActionId(null);
       return;
     }
@@ -335,7 +341,10 @@ export default function AdminDashboard({ session, onLogout }) {
                   <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-neutral-100 pt-6 sm:grid-cols-4">
                     <DetailField
                       label="Date"
-                      value={formatDateRange(booking.startDate, booking.endDate)}
+                      value={formatDateRange(
+                        booking.startDate,
+                        booking.endDate
+                      )}
                     />
                     <DetailField
                       label="Time"
@@ -373,7 +382,9 @@ export default function AdminDashboard({ session, onLogout }) {
                     <button
                       type="button"
                       disabled={isBusy}
-                      onClick={() => handleUpdateStatus(booking.bookID, "approved")}
+                      onClick={() =>
+                        handleUpdateStatus(booking.bookID, "approved")
+                      }
                       className="rounded-full bg-bidyo-crimsonBlack px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {isBusy ? "Working..." : "Approve"}
@@ -381,7 +392,9 @@ export default function AdminDashboard({ session, onLogout }) {
                     <button
                       type="button"
                       disabled={isBusy}
-                      onClick={() => handleUpdateStatus(booking.bookID, "rejected")}
+                      onClick={() =>
+                        handleUpdateStatus(booking.bookID, "rejected")
+                      }
                       className="rounded-full border border-neutral-200 px-6 py-3 text-xs font-bold uppercase tracking-wider text-neutral-600 transition hover:border-red-100 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {isBusy ? "Working..." : "Reject"}

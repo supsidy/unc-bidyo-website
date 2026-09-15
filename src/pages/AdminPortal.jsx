@@ -63,7 +63,5 @@ export default function AdminPortal() {
     return <AdminLogin onLoginSuccess={setSession} />;
   }
 
-  return (
-    <AdminDashboard session={session} onLogout={() => setSession(null)} />
-  );
+  return <AdminDashboard session={session} onLogout={() => setSession(null)} />;
 }

@@ -2,10 +2,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { OfferCarouselSkeletonContent } from "./skeletons/OfferCarouselSkeleton";
 
 // ---- Tunables ----
-const SLIDE_WIDTH_RATIO = 0.6;   // each slide's width as a fraction of the container
-const GAP_PX = 32;               // space between slides
-const SNAP_DURATION_MS = 700;    // eased snap animation when a drag/click settles on a slide
-const AUTOPLAY_DELAY = 6000;     // ms between auto-advances
+const SLIDE_WIDTH_RATIO = 0.6; // each slide's width as a fraction of the container
+const GAP_PX = 32; // space between slides
+const SNAP_DURATION_MS = 700; // eased snap animation when a drag/click settles on a slide
+const AUTOPLAY_DELAY = 6000; // ms between auto-advances
 const DRAG_THRESHOLD_RATIO = 0.18; // fraction of a slide's width you must drag to trigger a slide change
 
 export default function OfferCarousel() {
@@ -66,12 +66,19 @@ export default function OfferCarousel() {
   );
 
   const goTo = useCallback((i) => setIndex(clampIndex(i)), [clampIndex]);
-  const goNext = useCallback(() => setIndex((i) => clampIndex(i + 1)), [clampIndex]);
-  const goPrev = useCallback(() => setIndex((i) => clampIndex(i - 1)), [clampIndex]);
+  const goNext = useCallback(
+    () => setIndex((i) => clampIndex(i + 1)),
+    [clampIndex]
+  );
+  const goPrev = useCallback(
+    () => setIndex((i) => clampIndex(i - 1)),
+    [clampIndex]
+  );
 
   // ---- Autoplay — wraps around, pauses on hover/drag/interaction ----
   useEffect(() => {
-    if (status !== "ready" || isPaused || isDragging || offers.length === 0) return;
+    if (status !== "ready" || isPaused || isDragging || offers.length === 0)
+      return;
 
     autoplayRef.current = setInterval(() => {
       setIndex((i) => (i + 1) % offers.length);
@@ -145,7 +152,7 @@ export default function OfferCarousel() {
           WHAT WE OFFER
         </h2>
         <p className="mx-auto mt-4 max-w-md text-center text-sm text-white/60">
-          The services that the organization provides. 
+          The services that the organization provides.
         </p>
 
         {status === "loading" && (
@@ -183,7 +190,8 @@ export default function OfferCarousel() {
             >
               {/* Screen-reader live announcement */}
               <p className="sr-only" aria-live="polite">
-                Showing {offers[index]?.title}, slide {index + 1} of {offers.length}
+                Showing {offers[index]?.title}, slide {index + 1} of{" "}
+                {offers.length}
               </p>
 
               {/* Track */}
@@ -231,8 +239,11 @@ export default function OfferCarousel() {
                         className="pointer-events-none absolute inset-x-0 bottom-0 p-6"
                         style={{
                           opacity: isActive ? 1 : 0.5,
-                          transform: isActive ? "translateY(0)" : "translateY(6px)",
-                          transition: "opacity 500ms ease, transform 500ms ease",
+                          transform: isActive
+                            ? "translateY(0)"
+                            : "translateY(6px)",
+                          transition:
+                            "opacity 500ms ease, transform 500ms ease",
                         }}
                       >
                         <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">
@@ -283,7 +294,9 @@ export default function OfferCarousel() {
                   aria-label={`Go to ${offer.title}`}
                   aria-current={i === index}
                   className={`h-2 rounded-full transition-all duration-500 ${
-                    i === index ? "w-8 bg-white" : "w-2 bg-white/30 hover:bg-white/50"
+                    i === index
+                      ? "w-8 bg-white"
+                      : "w-2 bg-white/30 hover:bg-white/50"
                   }`}
                 />
               ))}

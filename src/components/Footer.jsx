@@ -61,7 +61,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
-              Est. 2023, The organization's mission is to capture and share the moments of every UNCean.
+              Est. 2023, The organization's mission is to capture and share the
+              moments of every UNCean.
             </p>
 
             {/* Socials */}
@@ -122,7 +123,9 @@ export default function Footer() {
                   +63 900 000 0000
                 </a>
               </li>
-              <li className="text-white/50">J. Hernandez Ave. Naga City, Camarines Sur, Philippines 4400</li>
+              <li className="text-white/50">
+                J. Hernandez Ave. Naga City, Camarines Sur, Philippines 4400
+              </li>
             </ul>
           </div>
         </div>

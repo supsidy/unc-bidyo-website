@@ -47,10 +47,14 @@ export default function AdminLogin({ onLoginSuccess }) {
       if (data?.session) {
         onLoginSuccess?.(data.session);
       } else {
-        setErrorMsg("Sign-in did not return a valid session. Please try again.");
+        setErrorMsg(
+          "Sign-in did not return a valid session. Please try again."
+        );
       }
     } catch (err) {
-      setErrorMsg("Something went wrong. Please check your connection and try again.");
+      setErrorMsg(
+        "Something went wrong. Please check your connection and try again."
+      );
     } finally {
       setLoading(false);
     }

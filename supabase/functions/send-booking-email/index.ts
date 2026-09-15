@@ -38,7 +38,9 @@ serve(async (req) => {
     }
 
     if (!booking.email) {
-      return new Response(JSON.stringify({ error: "Booking has no email" }), { status: 400 });
+      return new Response(JSON.stringify({ error: "Booking has no email" }), {
+        status: 400,
+      });
     }
 
     // booking_form stores the name split across three columns, not a single `name` field
@@ -98,6 +100,8 @@ serve(async (req) => {
     return new Response(JSON.stringify({ sent: true }), { status: 200 });
   } catch (err) {
     console.error("send-booking-email error:", err);
-    return new Response(JSON.stringify({ error: String(err) }), { status: 500 });
+    return new Response(JSON.stringify({ error: String(err) }), {
+      status: 500,
+    });
   }
 });

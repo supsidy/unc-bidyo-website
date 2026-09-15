@@ -11,7 +11,9 @@ const TILE_SPANS = [
   "col-span-2 lg:col-span-1 lg:row-span-2",
 ];
 
-export default function HighlightsSectionSkeleton({ tileCount = TILE_SPANS.length }) {
+export default function HighlightsSectionSkeleton({
+  tileCount = TILE_SPANS.length,
+}) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32">
       <div className="relative z-10 mx-auto max-w-7xl">

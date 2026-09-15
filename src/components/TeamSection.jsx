@@ -13,7 +13,10 @@ export default function TeamSection() {
   };
 
   return (
-    <section id="team" className="relative overflow-x-clip bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32">
+    <section
+      id="team"
+      className="relative overflow-x-clip bg-gradient-to-br from-bidyo-crimsonBlack via-bidyo-crimsonDeep to-bidyo-crimsonBlack px-6 pb-24 pt-4 lg:px-10 lg:pb-32"
+    >
       {/* fade in from the previous section so the seam isn't a hard cut */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bidyo-crimsonBlack to-transparent" />
       {/* fade out to the next section */}

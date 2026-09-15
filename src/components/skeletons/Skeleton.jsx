@@ -35,15 +35,26 @@ export function SkeletonText({
           key={i}
           tone={tone}
           className="h-3 w-full"
-          style={i === lines - 1 && lines > 1 ? { width: lastLineWidth } : undefined}
+          style={
+            i === lines - 1 && lines > 1 ? { width: lastLineWidth } : undefined
+          }
         />
       ))}
     </div>
   );
 }
 
-export function SkeletonAvatar({ tone = "dark", size = "h-12 w-12", className = "" }) {
-  return <SkeletonBox tone={tone} className={`${size} rounded-full shrink-0 ${className}`} />;
+export function SkeletonAvatar({
+  tone = "dark",
+  size = "h-12 w-12",
+  className = "",
+}) {
+  return (
+    <SkeletonBox
+      tone={tone}
+      className={`${size} rounded-full shrink-0 ${className}`}
+    />
+  );
 }
 
 export function SkeletonButton({ tone = "dark", className = "h-11 w-32" }) {

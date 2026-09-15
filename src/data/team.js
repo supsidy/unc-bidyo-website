@@ -1,8 +1,7 @@
-const team = 
- [
+const team = [
   {
     id: "member-1",
-    name: "Arturo \"Junie\" Orante Jr.",
+    name: 'Arturo "Junie" Orante Jr.',
     role: "Adviser",
     image: "/images/team/1.png",
     hoverImage: "/images/team/1.1.png",
@@ -21,14 +20,14 @@ const team =
     image: "/images/team/3.png",
     hoverImage: "/images/team/3.1.png",
   },
-   {
+  {
     id: "member-4",
     name: "Mike Angel Barbecho",
     role: "Internal Vice President",
     image: "/images/team/4.png",
     hoverImage: "/images/team/4.1.png",
   },
-   {
+  {
     id: "member-5",
     name: "Yohance Lumanta",
     role: "External Vice President",
@@ -111,7 +110,7 @@ const team =
     role: "Website Manager",
     image: "/images/team/16.png",
     hoverImage: "/images/team/16.1.png",
-  }
+  },
 ];
 
 export default team;

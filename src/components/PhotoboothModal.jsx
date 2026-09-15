@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { usePhotoboothModal } from "../context/PhotoboothModalContext";
 
-const DRIVE_URL = "https://drive.google.com/drive/folders/1_f-AUnO9PhMtE9pb9m86EnOgdkmKEv51"; // TODO: replace with the actual UNC BIDYO Drive folder link
+const DRIVE_URL =
+  "https://drive.google.com/drive/folders/1_f-AUnO9PhMtE9pb9m86EnOgdkmKEv51"; // TODO: replace with the actual UNC BIDYO Drive folder link
 const ILLUSTRATION_SRC = "/images/thanks.png"; // TODO: replace with your illustration/logo path
 
 export default function PhotoboothModal() {
@@ -89,8 +90,8 @@ export default function PhotoboothModal() {
           </h2>
 
           <p className="mt-3 text-sm leading-relaxed text-neutral-500">
-            Thank you for visiting the UNC BIDYO photobooth! Click below to access and
-            download your soft-copy pictures.
+            Thank you for visiting the UNC BIDYO photobooth! Click below to
+            access and download your soft-copy pictures.
           </p>
 
           <a
