@@ -41,6 +41,19 @@ npm run build
 npm run preview
 ```
 
+### Tests
+
+```bash
+npm run test           # run once
+npm run test:watch     # watch mode
+npm run test:coverage  # with coverage (feeds SonarCloud)
+```
+
+Test coverage is currently minimal (data validation + a couple of component
+smoke tests) — most components, `BookingForm`, and the admin pages have no
+tests yet. Add tests alongside new/changed code rather than trying to
+backfill everything at once.
+
 ### Lint and format
 
 ```bash

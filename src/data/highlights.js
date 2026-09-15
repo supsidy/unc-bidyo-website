@@ -11,7 +11,7 @@ const highlights = [
       "/images/highlights/a7.png",
       "/images/highlights/a8.png",
       "/images/highlights/a9.png",
-      "images/highlights/a10.png",
+      "/images/highlights/a10.png",
     ],
   },
   {
